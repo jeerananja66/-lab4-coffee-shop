@@ -7,6 +7,16 @@
       <p>ชื่อเมนู: {{ coffee.name }}</p>
       <p>ราคา: {{ coffee.price }}</p>
       <p>ประเภท: {{ coffee.type }}</p>
+      
+      สถานะ:
+  <span
+    :style="{
+      color: coffee.isAvailable ? 'green' : 'red',
+      fontWeight: 'bold'
+    }"
+  >
+    {{ coffee.isAvailable ? 'จำหน่าย' : 'หมด' }}
+  </span>
       <p>รายละเอียด: {{ coffee.description }}</p>
     </div>
 

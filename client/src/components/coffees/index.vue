@@ -14,6 +14,17 @@
         <div>ชื่อเมนู: {{ coffee.name }}</div>
         <div>ราคา: {{ coffee.price }}</div>
         <div>ประเภท: {{ coffee.type }}</div>
+        <div>
+  สถานะ:
+  <span
+    :style="{
+      color: coffee.isAvailable === true ? 'green' : 'red',
+      fontWeight: 'bold'
+    }"
+  >
+    {{ coffee.isAvailable === true ? 'จำหน่าย' : 'หมด' }}
+  </span>
+</div>
 
         <p>
           <!-- ทุกคนดูรายละเอียดได้ -->

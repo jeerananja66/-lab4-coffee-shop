@@ -28,6 +28,15 @@
         <textarea v-model="coffee.description"></textarea>
       </div>
 
+      <!-- ✅ เพิ่มสถานะเมนู -->
+      <div>
+        <label>สถานะ</label><br />
+        <select v-model="coffee.isAvailable">
+          <option :value="true">จำหน่าย</option>
+          <option :value="false">หมด</option>
+        </select>
+      </div>
+
       <br />
 
       <button type="submit">บันทึกเมนู</button>
@@ -48,7 +57,8 @@ export default {
         name: '',
         price: null,
         type: '',
-        description: ''
+        description: '',
+        isAvailable: false
       }
     }
   },

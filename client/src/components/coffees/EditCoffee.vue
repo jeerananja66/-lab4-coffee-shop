@@ -28,6 +28,15 @@
         <textarea v-model="coffee.description"></textarea>
       </p>
 
+      <!-- ✅ เพิ่มสถานะเมนู -->
+      <div>
+        <label>สถานะ</label><br />
+        <select v-model="coffee.isAvailable">
+          <option :value="true">จำหน่าย</option>
+          <option :value="false">หมด</option>
+        </select>
+      </div>
+
       <p>
         <button @click="updateCoffee">บันทึกการแก้ไข</button>
       </p>
