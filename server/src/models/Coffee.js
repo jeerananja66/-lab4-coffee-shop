@@ -8,6 +8,9 @@ module.exports = (sequelize, DataTypes) => {
       isAvailable: {
   type: DataTypes.BOOLEAN,
   defaultValue: false
+} ,
+thumbnail: {
+  type: DataTypes.STRING
 }
     })
     return Coffee

@@ -5,6 +5,11 @@
     <div v-if="coffee">
       <p>id: {{ coffee.id }}</p>
       <p>ชื่อเมนู: {{ coffee.name }}</p>
+      <img
+  v-if="coffee.thumbnail"
+  :src="`http://localhost:8081/assets/uploads/${coffee.thumbnail}`"
+  width="300"
+/>
       <p>ราคา: {{ coffee.price }}</p>
       <p>ประเภท: {{ coffee.type }}</p>
       

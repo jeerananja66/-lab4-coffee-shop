@@ -8,6 +8,15 @@
         <input v-model="coffee.name" type="text" required />
       </div>
 
+      <upload-image @uploaded="onUploaded"></upload-image> <!-- เพิ่ม Component Upload -->
+
+
+      <div class="mb-3 editor-wrapper">
+        <label class="form-label">Preview:</label>
+        <ckeditor :editor="editor" v-model="coffee.content" :config="editorConfig"></ckeditor>
+      </div>
+
+
       <div>
         <label>ราคา</label><br />
         <input v-model.number="coffee.price" type="number" required />
@@ -49,32 +58,70 @@
 
 <script>
 import CoffeesService from '../../services/CoffeesService'
+import ClassicEditor from '@ckeditor/ckeditor5-build-classic'
+import UploadImage from '../Utils/Upload.vue' // Import
 
 export default {
+  components: {
+    UploadImage // Register Component
+  },
   data () {
     return {
+      editor: ClassicEditor,  // 1. กำหนด Editor Build
+      editorConfig: {
+        licenseKey: 'GPL',
+        // สามารถปรับแต่ง Toolbar ได้ตามต้องการ
+        toolbar: [ 'heading', '|', 'bold', 'italic', 'link', 'bulletedList', 'numberedList', 'blockQuote' ] // 2. ตั้งค่า Toolbar
+      },
       coffee: {
-        name: '',
-        price: null,
-        type: '',
-        description: '',
-        isAvailable: false
-      }
+      name: '',
+      thumbnail: null,
+      pictures: null,
+      content: '', // 3. ข้อมูล HTML จาก Editor จะถูกเก็บในตัวแปรนี้ 
+      price: 0,
+      type: '',
+      description: '',
+      isAvailable: true
+    }
     }
   },
   methods: {
-    async createCoffee () {
-      try {
-        await CoffeesService.post(this.coffee)
-        alert('เพิ่มเมนูกาแฟเรียบร้อย')
-        this.$router.push('/coffees')
-      } catch (err) {
-        console.log(err)
-      }
+     // รับชื่อไฟล์จาก Component ลูก
+    onUploaded (filename) {
+      this.coffee.thumbnail = filename
+      console.log('Thumbnail set to:', filename)
     },
+    async createCoffee () {
+  try {
+
+    if (!this.coffee.thumbnail) {
+      alert('กรุณาอัปโหลดรูปก่อน')
+      return
+    }
+
+    await CoffeesService.post(this.coffee)
+
+    alert('เพิ่มเมนูกาแฟเรียบร้อย')
+    this.$router.push('/coffees')
+
+  } catch (err) {
+    console.log(err)
+  }
+},
     navigateTo (route) {
       this.$router.push(route)
     }
   }
 }
 </script>
+
+<style scoped>
+/* ปรับแต่ง CSS เฉพาะส่วน Editor */
+.editor-wrapper {
+    text-align: left;
+}
+/* แก้ไขความสูงขั้นต่ำของ Editor ให้พิมพ์ง่ายขึ้น */
+:deep(.ck-editor__editable) {
+    min-height: 300px;
+}
+</style>

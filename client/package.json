@@ -9,6 +9,8 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@ckeditor/ckeditor5-build-classic": "^44.3.0",
+    "@ckeditor/ckeditor5-vue": "^7.3.1",
     "axios": "^1.13.2",
     "pinia": "^3.0.4",
     "pinia-plugin-persistedstate": "^4.7.1",

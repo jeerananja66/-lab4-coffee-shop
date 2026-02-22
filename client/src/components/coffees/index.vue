@@ -9,36 +9,35 @@
         v-for="coffee in coffees"
         :key="coffee.id"
         style="margin-bottom: 15px;"
+        class="coffee-item"
       >
         <div>id: {{ coffee.id }}</div>
-        <div>ชื่อเมนู: {{ coffee.name }}</div>
+
+        <!-- ✅ แสดงรูปวงกลมหน้าชื่อ -->
+        <div>
+          <img
+  v-if="coffee.thumbnail"
+  :src="`http://localhost:8081/assets/uploads/${coffee.thumbnail}`"
+  width="300"
+/>
+          ชื่อเมนู: {{ coffee.name }}
+        </div>
+
         <div>ราคา: {{ coffee.price }}</div>
         <div>ประเภท: {{ coffee.type }}</div>
-        <div>
-  สถานะ:
-  <span
-    :style="{
-      color: coffee.isAvailable === true ? 'green' : 'red',
-      fontWeight: 'bold'
-    }"
-  >
-    {{ coffee.isAvailable === true ? 'จำหน่าย' : 'หมด' }}
-  </span>
-</div>
+        <div>สถานะ: {{ coffee.status }}</div>
 
         <p>
-          <!-- ทุกคนดูรายละเอียดได้ -->
           <button @click="navigateTo('/coffee/' + coffee.id)">
             ดูรายละเอียด
           </button>
 
-          <!-- 🔒 ปุ่มจัดการ แสดงเฉพาะตอน Login -->
           <template v-if="isLoggedIn">
             <button @click="navigateTo('/coffee/edit/' + coffee.id)">
               แก้ไข
             </button>
 
-            <button @click="deleteCoffee(coffee)">
+            <button @click="deleteCoffee(coffee.id)">
               ลบเมนู
             </button>
           </template>
@@ -70,7 +69,6 @@ export default {
   },
 
   computed: {
-    // ✅ ตรวจสอบสถานะ Login จาก Pinia
     isLoggedIn () {
       const authenStore = useAuthenStore()
       return authenStore.isUserLoggedIn
@@ -82,11 +80,11 @@ export default {
       this.$router.push(route)
     },
 
-    async deleteCoffee (coffee) {
+    async deleteCoffee (coffeeId) {
       const result = confirm('Want to delete?')
       if (result) {
         try {
-          await CoffeesService.delete(coffee)
+          await CoffeesService.delete(coffeeId)
           this.refreshData()
         } catch (err) {
           console.log(err)
@@ -100,3 +98,19 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+.coffee-thumb {
+  width: 40px;
+  height: 40px;
+  object-fit: cover;
+  border-radius: 50%;
+  margin-right: 10px;
+  vertical-align: middle;
+}
+
+.coffee-item {
+  display: flex;
+  flex-direction: column;
+}
+</style>
